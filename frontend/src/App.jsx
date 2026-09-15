@@ -10,7 +10,7 @@ function App(){
     if(task.trim() === ''){
       return
     }
-    setTasks([...tasks,task])
+    setTasks([...tasks,{title : task , completed : false}])
     setTask('')
     setAddTask(false)
   }
@@ -22,17 +22,25 @@ function App(){
   }
   function editTask(idx){
     setEditIndex(idx)
-    setTask(tasks[idx])
+    setTask(tasks[idx].title)
   }
   function editSubmit(){
     if(task.trim() === ''){
       return
     }
     const newTasks = [...tasks]
-    newTasks[editIndex] = task
+    newTasks[editIndex].title = task
     setTasks(newTasks)
     setTask('')
     setEditIndex(null)
+  }
+  function Completed(idx){
+    if(tasks[idx].completed == true){
+      return
+    }
+    const newTasks = [...tasks]
+    newTasks[idx].completed = true;
+    setTasks(newTasks)
   }
 
   return (
@@ -58,12 +66,18 @@ function App(){
     <ul>
       {tasks.map((task,index) => (
         <li key={index}>
-          {task}
+          {tasks[index].completed === true && (
+            <p>[Done]</p>
+          )}
+          {task.title}
           <button onClick={()=> editTask(index)}>
             Edit
           </button>
           <button onClick={()=>indexDlt(index)}>
             Delete
+          </button>
+          <button onClick={() =>Completed(index)}>
+            Done
           </button>
         </li>
       ))}
